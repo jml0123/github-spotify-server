@@ -1,6 +1,6 @@
 require("dotenv").config();
 require("isomorphic-unfetch");
-
+const {REDIRECT_URI}= require("../config")
 const scopes = [
     "user-library-read",
     "user-library-read",
@@ -40,7 +40,7 @@ function visitPagePrompt() {
         clientId +
         (scopes ? permissions : "") +
         "&redirect_uri=" +
-        encodeURIComponent("http://localhost:8000")
+        encodeURIComponent(REDIRECT_URI)
     );
 }
 
@@ -57,7 +57,7 @@ async function getRefreshToken(){
         `https://accounts.spotify.com/api/token?grant_type=authorization_code&code=${encodeURIComponent(
           code
         )}&redirect_uri=${encodeURIComponent(
-          "http://localhost:8000"
+            REDIRECT_URI
         )}&client_id=${clientId}&client_secret=${clientSecret}`,
         {
           headers: {

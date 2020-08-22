@@ -46,7 +46,7 @@ app.get("/currently-playing", async(req, res)=> {
       .json(trackData)
     } 
       catch(err){ 
-        next(err);
+        console.log(err)
       }    
 })
 

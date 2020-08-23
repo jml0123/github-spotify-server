@@ -4,7 +4,8 @@ const {REDIRECT_URI}= require("../config")
 const scopes = [
     "user-library-read",
     "user-library-read",
-    "user-read-currently-playing"
+    "user-read-currently-playing",
+    "user-read-playback-state"
 ];
 
 const clientId = process.env.CLIENT_ID;

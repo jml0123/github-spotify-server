@@ -24,24 +24,37 @@ app.get("/", async (req, res) => {
 
 app.get("/currently-playing", async(req, res)=> {
     const trackData = {
-        artist: "",
-        track: "",
-        url: ""
+        playing: null,
+        artist: null,
+        track: null,
+        url: null
     };
     const {access_token} = await getAuthToken()
-    console.log({access_token})
     try {
         const currentlyPlaying = await (
-        await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+        await fetch("https://api.spotify.com/v1/me/player/currently-playing?additional_types=episode", {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
         })
       )
       const data = await currentlyPlaying.json()
-      trackData.artist = data.item.album.artists[0].name
-      trackData.track = data.item.name
-      trackData.url = data.item.href
+      if (!data.item) {
+        trackData.playing = false;
+        res.status(200).json(trackData)
+      }
+      else if(data.currently_playing_type === "track") {
+        trackData.playing = true;
+        trackData.artist = data.item.album.artists[0].name
+        trackData.track = data.item.name
+        trackData.url = data.item.external_urls.spotify
+      }
+      else if (data.currently_playing_type === "episode") {
+        trackData.playing = true;
+        trackData.artist = data.item.show.name
+        trackData.track = data.item.name
+        trackData.url = data.item.show.external_urls.spotify
+      }
       res.status(200)
       .json(trackData)
     } 

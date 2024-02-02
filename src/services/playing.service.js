@@ -22,6 +22,12 @@ const getCurrentlyPlaying = async (req, res) => {
             },
         });
 
+        if (!currentlyPlaying.ok) {
+            console.error(`Error fetching currently playing data. Status: ${currentlyPlaying.status}`);
+            res.status(500).json({ error: "Internal Server Error" });
+            return;
+        }
+        
         const data = await currentlyPlaying.json();
 
         if (!data || !data.item) {

@@ -11,7 +11,8 @@ export const getCurrentlyPlaying = async () => {
         album: null,
         releaseDate: null,
         url: null,
-        imageUrl: null
+        imageUrl: null,
+        type: null,
     };
     try {
         const currentlyPlaying = await (
@@ -39,11 +40,12 @@ export const getCurrentlyPlaying = async () => {
         trackData.playing = true;
         trackData.artist = data.item.show.name;
         trackData.track = data.item.name;
-        trackData.album = data.item.album.name ? data.item.album.name : null;
         trackData.url = data.item.show.external_urls.spotify;
-        trackData.releaseDate = data.item.album.release_date;
+        trackData.releaseDate = data.item.release_date;
         trackData.imageUrl = data.item.show.images[0].url;
       }
+      trackData.type = data.currently_playing_type;
+      
       res.status(200)
       .json(trackData)
     } 

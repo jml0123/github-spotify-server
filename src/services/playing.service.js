@@ -4,7 +4,6 @@ const {getAuthToken} = require('../apis/spotify');
 const getCurrentlyPlaying = async (req, res) => {
     try {
         const { access_token } = await getAuthToken();
-
         const trackData = {
             playing: null,
             artist: null,
@@ -17,18 +16,24 @@ const getCurrentlyPlaying = async (req, res) => {
         };
 
         const currentlyPlaying = await fetch("https://api.spotify.com/v1/me/player/currently-playing?additional_types=episode", {
-            headers: {
-                Authorization: `Bearer ${access_token}`,
-            },
-        });
+        headers: {
+            Authorization: `Bearer ${access_token}`,
+        },
+            });
 
         if (!currentlyPlaying.ok) {
             console.error(`Problem in fetching currently playing data. Status: ${currentlyPlaying.status}. Maybe it's not playing anything.`);
             res.status(200).json(trackData);
             return;
         }
-
-        const data = await currentlyPlaying.json();
+        let data;
+        try {
+            data = await currentlyPlaying.json();
+        } catch (jsonError) {
+            console.error(`Problem in fetching currently playing data. Status: ${currentlyPlaying.status}. Maybe it's not playing anything.`);
+            res.status(200).json(trackData);
+            return;
+        }
 
         if (!data || !data.item) {
             trackData.playing = false;

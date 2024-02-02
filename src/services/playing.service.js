@@ -23,7 +23,7 @@ const getCurrentlyPlaying = async (req, res) => {
         })
       )
       const data = await currentlyPlaying.json()
-      if (!data.item) {
+      if (!data || !data.item) {
         trackData.playing = false;
         res.status(200).json(trackData);
       }

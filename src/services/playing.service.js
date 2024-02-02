@@ -1,7 +1,7 @@
 
-const {getAuthToken} = require('./apis/spotify');
+const {getAuthToken} = require('../apis/spotify');
 
-export const getCurrentlyPlaying = async () => {
+const getCurrentlyPlaying = async (req, res) => {
     const {access_token} = await getAuthToken()
 
     const trackData = {
@@ -45,7 +45,7 @@ export const getCurrentlyPlaying = async () => {
         trackData.imageUrl = data.item.show.images[0].url;
       }
       trackData.type = data.currently_playing_type;
-      
+
       res.status(200)
       .json(trackData)
     } 
@@ -53,3 +53,5 @@ export const getCurrentlyPlaying = async () => {
         console.log(err)
       }    
 }
+
+module.exports = {getCurrentlyPlaying};

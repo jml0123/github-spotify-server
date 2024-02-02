@@ -24,13 +24,13 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/currently-playing", async(req, res)=> {
-  return await getCurrentlyPlaying();
+  return await getCurrentlyPlaying(req, res);
 })
 
 app.use(function errorHandler(error, req, res, next){
     let response
     if (NODE_ENV === "Production") {
-        response = {error: {message: "Something went wrong."}}
+        response = {error: {message: "Something went Wrong."}}
     }
     else {
         console.error(error);
@@ -39,4 +39,4 @@ app.use(function errorHandler(error, req, res, next){
     res.status(500).json(response)
 })
 
-module.exports = apps
+module.exports = app;

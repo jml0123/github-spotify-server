@@ -29,7 +29,7 @@ const getCurrentlyPlaying = async (req, res) => {
       }
       else if(data.currently_playing_type === "track") {
         trackData.playing = true;
-        trackData.artist = data.item.artists.map(a => a.name).join(", ").slice(0, -2);
+        trackData.artist = data.item.artists.map(a => a.name).join(", ");
         trackData.track = data.item.name;
         trackData.album = data.item.album.name;
         trackData.releaseDate = data.item.album.release_date;
